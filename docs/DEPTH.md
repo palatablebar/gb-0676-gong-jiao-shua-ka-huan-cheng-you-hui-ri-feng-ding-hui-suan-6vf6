@@ -31,6 +31,10 @@
 | TRAP-11 | 混合偏移 | 落错版本 | UTC归整 | `app/values.py` | `tests/test_m3.py::test_timezone_equal` |
 | TRAP-23 | 换乘截止点 | 重复优惠 | 截止点排除 | `app/modules/m5_discounts/rules.py` | `tests/test_m5.py::test_exact_window_excluded` |
 | TRAP-25 | 票价重叠 | 随意取版 | 冲突隔离 | `app/modules/m3_fares/rules.py` | `tests/test_m3.py::test_overlap_rejected` |
+| TRAP-27 | 封顶减免归属 | 末程独担 | 按各运营方实扣贡献比例分摊，分币守恒 | `app/modules/m5_discounts/rules.py` | `tests/test_m5.py::test_cap_shared_by_contributing_operators` |
+| TRAP-28 | 归属读取失败 | 整批报错 | 行完整保留，卡日回退旧版口径 | `app/modules/m2_routes/rules.py` | `tests/test_m5.py::test_operator_missing_legacy_fallback` |
+| TRAP-29 | 分摊未对平 | 直接封存 | 拦住日结封存 | `app/modules/m7_settlement/rules.py` | `tests/test_m7.py::test_allocation_unbalanced_blocked` |
+| TRAP-30 | 归属依据误删 | 静默断链 | 缺_raw或operator_basis拒绝封存 | `app/modules/m7_settlement/rules.py` | `tests/test_m7.py::test_missing_evidence_blocked` |
 
 ## 对账规则
 

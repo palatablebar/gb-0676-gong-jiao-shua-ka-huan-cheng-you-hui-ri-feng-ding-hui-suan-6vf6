@@ -16,3 +16,13 @@ def test_overlap_is_rejected():
     with pytest.raises(DomainError):evaluate([{"_line":1}],{"quarantine":[{"_line":1}]})
 def test_real_sample_rejected_have_reason(result):
     assert all(r["reason"] and r["detail"] for r in result["stages"][5]["cumulative_quarantine"])
+def test_real_sample_allocation_reconciled(result):
+    m=result["stages"][5]["metrics"]
+    assert m["allocation_balanced"] is True and m["cap_discount_total"]=="16.00" and m["allocated_total"]=="16.00"
+def test_allocation_unbalanced_detected():
+    rows=[{"card":"0001","business_day":"2026-11-16","expected":"2.00","reported":"2.00","cap_discount":"1.00","cap_share":"0.50"}]
+    assert evaluate(rows,{})["metrics"]["allocation_balanced"] is False
+def test_allocation_balanced_per_card_day():
+    rows=[{"card":"0001","business_day":"2026-11-16","expected":"2.00","reported":"2.00","cap_discount":"1.00","cap_share":"0.60"},
+          {"card":"0001","business_day":"2026-11-16","expected":"1.00","reported":"1.00","cap_discount":"0.00","cap_share":"0.40"}]
+    assert evaluate(rows,{})["metrics"]["allocation_balanced"] is True
